@@ -1,0 +1,329 @@
+/* USER CODE BEGIN Header */
+/**
+ ******************************************************************************
+ * @file    App/custom_app.c
+ * @author  MCD Application Team
+ * @brief   Custom Example Application (Server)
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "app_common.h"
+#include "dbg_trace.h"
+#include "ble.h"
+#include "custom_app.h"
+#include "custom_stm.h"
+#include "stm32_seq.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+typedef struct
+{
+  /* sensor */
+  uint8_t               Temperature_pressure_Notification_Status;
+  /* USER CODE BEGIN CUSTOM_APP_Context_t */
+
+  /* USER CODE END CUSTOM_APP_Context_t */
+
+  uint16_t              ConnectionHandle;
+} Custom_App_Context_t;
+
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private defines ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+
+/* USER CODE END PD */
+
+/* Private macros -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+#define MS_TO_RTC_TICKS(ms)  ( ((ms) * 2048) / 1000 )
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+/**
+ * START of Section BLE_APP_CONTEXT
+ */
+
+static Custom_App_Context_t Custom_App_Context;
+
+/**
+ * END of Section BLE_APP_CONTEXT
+ */
+
+uint8_t UpdateCharData[512];
+uint8_t NotifyCharData[512];
+uint16_t Connection_Handle;
+/* USER CODE BEGIN PV */
+extern uint8_t TX_BUFFER[1];
+extern uint8_t RX_BUFFER[3];      // we only need 3 bytes for ADC read
+extern uint16_t C1, C2, C3, C4, C5, C6, C7, C8, C9, C10;
+extern uint32_t raw_pressure, raw_temp;
+extern float temperature, offset, sensitivity, pressure;
+
+/* Command codes for the sensor */
+static const uint8_t reset_cmd = 0b00010000;
+static const uint8_t read_c1_cmd = 0b11101000;
+static const uint8_t read_c2_cmd = 0b11101010;
+static const uint8_t read_c3_cmd = 0b11101100;
+static const uint8_t read_c4_cmd = 0b11101110;
+static const uint8_t read_c5_cmd = 0b11110000;
+static const uint8_t read_c6_cmd = 0b11110010;
+static const uint8_t read_c7_cmd = 0b11110100;
+static const uint8_t read_c8_cmd = 0b11110110;
+static const uint8_t read_c9_cmd = 0b11111000;
+static const uint8_t read_c10_cmd = 0b11111010;
+static const uint8_t start_conversion_cmd = 0b01001100;  // ADC pressure+temp
+static const uint8_t read_adc_cmd = 0b01011100;  // read 3‐byte ADC result
+extern SPI_HandleTypeDef hspi1;
+
+#define SENSOR_UPDATE_PERIOD_MS         (1000)  // 1 second
+static uint8_t TemperatureTimerId;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+/* sensor */
+static void Custom_Temperature_pressure_Update_Char(void);
+static void Custom_Temperature_pressure_Send_Notification(void);
+
+/* USER CODE BEGIN PFP */
+void Sensor_ReadTempPressure(void);
+static void Sensor_Timer_Callback(void);
+/* USER CODE END PFP */
+
+/* Functions Definition ------------------------------------------------------*/
+void Custom_STM_App_Notification(Custom_STM_App_Notification_evt_t *pNotification)
+{
+  /* USER CODE BEGIN CUSTOM_STM_App_Notification_1 */
+
+  /* USER CODE END CUSTOM_STM_App_Notification_1 */
+  switch (pNotification->Custom_Evt_Opcode)
+  {
+    /* USER CODE BEGIN CUSTOM_STM_App_Notification_Custom_Evt_Opcode */
+
+    /* USER CODE END CUSTOM_STM_App_Notification_Custom_Evt_Opcode */
+
+    /* sensor */
+    case CUSTOM_STM_TEMPERATURE_PRESSURE_READ_EVT:
+      /* USER CODE BEGIN CUSTOM_STM_TEMPERATURE_PRESSURE_READ_EVT */
+
+      /* USER CODE END CUSTOM_STM_TEMPERATURE_PRESSURE_READ_EVT */
+      break;
+
+    case CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_ENABLED_EVT:
+      /* USER CODE BEGIN CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_ENABLED_EVT */
+		Custom_App_Context.Temperature_pressure_Notification_Status = 1;
+		HW_TS_Start(TemperatureTimerId,
+				MS_TO_RTC_TICKS(SENSOR_UPDATE_PERIOD_MS));
+		APP_DBG_MSG("## Combined Notifications ENABLED\n");
+      /* USER CODE END CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_ENABLED_EVT */
+      break;
+
+    case CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_DISABLED_EVT:
+      /* USER CODE BEGIN CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_DISABLED_EVT */
+		Custom_App_Context.Temperature_pressure_Notification_Status = 0;
+		HW_TS_Stop(TemperatureTimerId);
+		APP_DBG_MSG("## Combined Notifications DISABLED\n");
+
+      /* USER CODE END CUSTOM_STM_TEMPERATURE_PRESSURE_NOTIFY_DISABLED_EVT */
+      break;
+
+    case CUSTOM_STM_NOTIFICATION_COMPLETE_EVT:
+      /* USER CODE BEGIN CUSTOM_STM_NOTIFICATION_COMPLETE_EVT */
+
+      /* USER CODE END CUSTOM_STM_NOTIFICATION_COMPLETE_EVT */
+      break;
+
+    default:
+      /* USER CODE BEGIN CUSTOM_STM_App_Notification_default */
+
+      /* USER CODE END CUSTOM_STM_App_Notification_default */
+      break;
+  }
+  /* USER CODE BEGIN CUSTOM_STM_App_Notification_2 */
+
+  /* USER CODE END CUSTOM_STM_App_Notification_2 */
+  return;
+}
+
+void Custom_APP_Notification(Custom_App_ConnHandle_Not_evt_t *pNotification)
+{
+  /* USER CODE BEGIN CUSTOM_APP_Notification_1 */
+
+  /* USER CODE END CUSTOM_APP_Notification_1 */
+
+  switch (pNotification->Custom_Evt_Opcode)
+  {
+    /* USER CODE BEGIN CUSTOM_APP_Notification_Custom_Evt_Opcode */
+
+    /* USER CODE END P2PS_CUSTOM_Notification_Custom_Evt_Opcode */
+    case CUSTOM_CONN_HANDLE_EVT :
+      /* USER CODE BEGIN CUSTOM_CONN_HANDLE_EVT */
+		Custom_App_Context.ConnectionHandle = pNotification->ConnectionHandle;
+      /* USER CODE END CUSTOM_CONN_HANDLE_EVT */
+      break;
+
+    case CUSTOM_DISCON_HANDLE_EVT :
+      /* USER CODE BEGIN CUSTOM_DISCON_HANDLE_EVT */
+		if (Custom_App_Context.Temperature_pressure_Notification_Status == 1) {
+			HW_TS_Stop(TemperatureTimerId);
+		}
+		Custom_App_Context.Temperature_pressure_Notification_Status = 0;
+
+      /* USER CODE END CUSTOM_DISCON_HANDLE_EVT */
+      break;
+
+    default:
+      /* USER CODE BEGIN CUSTOM_APP_Notification_default */
+
+      /* USER CODE END CUSTOM_APP_Notification_default */
+      break;
+  }
+
+  /* USER CODE BEGIN CUSTOM_APP_Notification_2 */
+
+  /* USER CODE END CUSTOM_APP_Notification_2 */
+
+  return;
+}
+
+void Custom_APP_Init(void)
+{
+  /* USER CODE BEGIN CUSTOM_APP_Init */
+	//Sensor_ReadCoefficients();
+	HW_TS_Create(0, &TemperatureTimerId, hw_ts_Repeated, Sensor_Timer_Callback);
+  /* USER CODE END CUSTOM_APP_Init */
+  return;
+}
+
+/* USER CODE BEGIN FD */
+
+/* USER CODE END FD */
+
+/*************************************************************
+ *
+ * LOCAL FUNCTIONS
+ *
+ *************************************************************/
+
+/* sensor */
+__USED void Custom_Temperature_pressure_Update_Char(void) /* Property Read */
+{
+  uint8_t updateflag = 0;
+
+  /* USER CODE BEGIN Temperature_pressure_UC_1*/
+
+  /* USER CODE END Temperature_pressure_UC_1*/
+
+  if (updateflag != 0)
+  {
+    Custom_STM_App_Update_Char(CUSTOM_STM_TEMPERATURE_PRESSURE, (uint8_t *)UpdateCharData);
+  }
+
+  /* USER CODE BEGIN Temperature_pressure_UC_Last*/
+
+  /* USER CODE END Temperature_pressure_UC_Last*/
+  return;
+}
+
+void Custom_Temperature_pressure_Send_Notification(void) /* Property Notification */
+{
+  uint8_t updateflag = 0;
+
+  /* USER CODE BEGIN Temperature_pressure_NS_1*/
+
+  /* USER CODE END Temperature_pressure_NS_1*/
+
+  if (updateflag != 0)
+  {
+    Custom_STM_App_Update_Char(CUSTOM_STM_TEMPERATURE_PRESSURE, (uint8_t *)NotifyCharData);
+  }
+
+  /* USER CODE BEGIN Temperature_pressure_NS_Last*/
+
+  /* USER CODE END Temperature_pressure_NS_Last*/
+
+  return;
+}
+
+/* USER CODE BEGIN FD_LOCAL_FUNCTIONS*/
+void Sensor_ReadTempPressure(void) {
+	/* 1) Send START CONVERSION (temp+pressure) */
+	TX_BUFFER[0] = start_conversion_cmd;
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi1, TX_BUFFER, 1, HAL_MAX_DELAY);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+	/* 2) Wait ~300 ms for conversion to complete */
+
+	/* 3) Send READ ADC command, read 6 bytes total */
+	TX_BUFFER[0] = read_adc_cmd;
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi1, TX_BUFFER, 1, HAL_MAX_DELAY);
+	// We expect: RX_BUFFER[0..2] = raw_temp (MSB, mid, LSB)
+	//            RX_BUFFER[3..5] = raw_pressure
+	HAL_SPI_Receive(&hspi1, RX_BUFFER, 6, HAL_MAX_DELAY);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+	/* 4) Merge bytes: raw_temp = 24‐bit, raw_pressure = 24‐bit */
+	raw_temp = ((uint32_t) RX_BUFFER[0] << 16) | ((uint32_t) RX_BUFFER[1] << 8)
+			| (uint32_t) RX_BUFFER[2];
+	raw_pressure = ((uint32_t) RX_BUFFER[3] << 16)
+			| ((uint32_t) RX_BUFFER[4] << 8) | (uint32_t) RX_BUFFER[5];
+
+	/* 5) Compute “temperature” per your formula (as float) */
+	// temperature = C1 * raw_temp / 2^29 – C3 * raw_pressure / 2^35 – C2/64
+	temperature = ((float) C1 * (float) raw_temp / 536870912.0f)
+			- ((float) C3 * (float) raw_pressure / 34359738368.0f)
+			- ((float) C2 / 64.0f);
+
+	/* 6) Compute offset & sensitivity */
+	offset = (float) C6 + ((float) C7 * temperature / 512.0f);
+	sensitivity = (float) C8 + ((float) C9 * temperature / 512.0f);
+
+	/* 7) Finally, compute pressure: */
+	// pressure = raw_pressure * sensitivity / 2^22 – offset
+	pressure = ((float) raw_pressure * sensitivity / 4194304.0f) - offset;
+}
+
+static void Sensor_Timer_Callback(void) {
+	// Only do something if a client is subscribed for notifications
+	if (Custom_App_Context.Temperature_pressure_Notification_Status) {
+		uint8_t sensor_payload[8];
+
+		// 1. Read the sensor to get the latest temperature and pressure
+		Sensor_ReadTempPressure();
+
+		// 2. Pack both float values into the 8-byte array
+		memcpy(&sensor_payload[0], &temperature, sizeof(float)); // First 4 bytes
+		memcpy(&sensor_payload[4], &pressure, sizeof(float));    // Next 4 bytes
+
+		APP_DBG_MSG("Sending Combined Temp/Pres Notification...\n");
+
+		// 3. Send the single 8-byte notification
+		Custom_STM_App_Update_Char(CUSTOM_STM_TEMPERATURE_PRESSURE,
+				sensor_payload);
+		aci_gap_terminate(Custom_App_Context.ConnectionHandle, 0x13);
+		UTIL_LPM_SetStopMode( 1U<<CFG_LPM_APP_BLE, UTIL_LPM_ENABLE );
+		UTIL_LPM_SetOffMode(  1U<<CFG_LPM_APP_BLE, UTIL_LPM_ENABLE );
+	}
+}
+/* USER CODE END FD_LOCAL_FUNCTIONS*/

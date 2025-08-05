@@ -1,0 +1,7 @@
+../STM32_WPAN/App/custom_app.c:114:6:Custom_STM_App_Notification	16	static
+../STM32_WPAN/App/custom_app.c:168:6:Custom_APP_Notification	16	static
+../STM32_WPAN/App/custom_app.c:209:6:Custom_APP_Init	8	static
+../STM32_WPAN/App/custom_app.c:229:13:Custom_Temperature_pressure_Update_Char	16	static
+../STM32_WPAN/App/custom_app.c:248:6:Custom_Temperature_pressure_Send_Notification	16	static
+../STM32_WPAN/App/custom_app.c:269:6:Sensor_ReadTempPressure	8	static
+../STM32_WPAN/App/custom_app.c:308:13:Sensor_Timer_Callback	16	static
