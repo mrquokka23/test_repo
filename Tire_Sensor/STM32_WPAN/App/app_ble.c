@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
- ******************************************************************************
- * @file    App/app_ble.c
- * @author  MCD Application Team
- * @brief   BLE Application
- *****************************************************************************
- * @attention
- *
- * Copyright (c) 2025 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    App/app_ble.c
+  * @author  MCD Application Team
+  * @brief   BLE Application
+  *****************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2025 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -37,7 +37,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -227,9 +227,9 @@ uint8_t index_con_int, mutex;
  */
 uint8_t a_AdvData[25] =
 {
-  3, AD_TYPE_SHORTENED_LOCAL_NAME , 'S', '3',  /* Shortened name */
+  3, AD_TYPE_SHORTENED_LOCAL_NAME , 'S', '1',  /* Shortened name */
   2, AD_TYPE_LE_ROLE, 0x00 /* Only Peripheral Role supported */,
-  17, AD_TYPE_128_BIT_SERV_UUID_CMPLT_LIST, 0x8F, 0xE5, 0xB3, 0xD5, 0x2E, 0x7F, 0x4A, 0x98, 0x2A, 0x48, 0x7A, 0xCC, 0x25, 0x23, 0x00, 0x00,
+  17, AD_TYPE_128_BIT_SERV_UUID_CMPLT_LIST, 0x8F, 0xE5, 0xB3, 0xD5, 0x2E, 0x7F, 0x4A, 0x98, 0x2A, 0x48, 0x7A, 0xCC, 0x23, 0x23, 0x00, 0x00,
 
 };
 
@@ -385,8 +385,7 @@ void APP_BLE_Init(void)
   Custom_APP_Init();
 
   /* USER CODE BEGIN APP_BLE_Init_3 */
-	UTIL_LPM_SetStopMode(1U << CFG_LPM_APP_BLE, UTIL_LPM_DISABLE);
-	UTIL_LPM_SetOffMode(1U << CFG_LPM_APP_BLE, UTIL_LPM_DISABLE);
+
   /* USER CODE END APP_BLE_Init_3 */
 
   /**
@@ -1263,21 +1262,5 @@ void SVCCTL_ResumeUserEventFlow(void)
 }
 
 /* USER CODE BEGIN FD_WRAP_FUNCTIONS */
-void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim)
-{
-  if (hlptim->Instance!=LPTIM1) return;
 
-  // restore clocks...
-  SystemClock_Config();
-  HAL_ResumeTick();
-
-  // re-veto low-power while we advertise
-  UTIL_LPM_SetStopMode( 1U<<CFG_LPM_APP_BLE, UTIL_LPM_DISABLE );
-  UTIL_LPM_SetOffMode(  1U<<CFG_LPM_APP_BLE, UTIL_LPM_DISABLE );
-
-  // restart advertising
-  Adv_Request(APP_BLE_FAST_ADV);
-
-  HAL_LPTIM_Counter_Stop_IT(hlptim);
-}
 /* USER CODE END FD_WRAP_FUNCTIONS */

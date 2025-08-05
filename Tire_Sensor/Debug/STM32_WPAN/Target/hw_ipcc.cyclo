@@ -16,8 +16,6 @@
 ../STM32_WPAN/Target/hw_ipcc.c:149:6:HW_IPCC_Tx_Handler	7
 ../STM32_WPAN/Target/hw_ipcc.c:190:6:HW_IPCC_Enable	1
 ../STM32_WPAN/Target/hw_ipcc.c:221:6:HW_IPCC_Init	1
-../STM32_WPAN/Target/hw_ipcc.c:235:13:IPCC_Wakeup_CPU2	1
-../STM32_WPAN/Target/hw_ipcc.c:250:13:HW_IPCC_SetFlagCHx	1
 ../STM32_WPAN/Target/hw_ipcc.c:261:6:HW_IPCC_BLE_Init	1
 ../STM32_WPAN/Target/hw_ipcc.c:270:6:HW_IPCC_BLE_SendCmd	1
 ../STM32_WPAN/Target/hw_ipcc.c:277:13:HW_IPCC_BLE_EvtHandler	1

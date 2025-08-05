@@ -20,7 +20,6 @@
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_gpio.o"
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_hsem.o"
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_ipcc.o"
-"./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_lptim.o"
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr.o"
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr_ex.o"
 "./Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rcc.o"

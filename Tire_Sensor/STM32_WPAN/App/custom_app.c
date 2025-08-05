@@ -29,8 +29,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
-#include "stm32_lpm.h"
+extern RTC_HandleTypeDef hrtc;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,12 +50,12 @@ typedef struct
 
 /* Private defines ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-extern LPTIM_HandleTypeDef hlptim1;
+
 /* USER CODE END PD */
 
 /* Private macros -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define MS_TO_RTC_TICKS(ms)  ( ((ms) * 2048) / 1000 )
+#define MS_TO_RTC_TICKS(ms) ((ms * 32768) / 1000)
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -96,7 +95,7 @@ static const uint8_t start_conversion_cmd = 0b01001100;  // ADC pressure+temp
 static const uint8_t read_adc_cmd = 0b01011100;  // read 3‐byte ADC result
 extern SPI_HandleTypeDef hspi1;
 
-#define SENSOR_UPDATE_PERIOD_MS         (1000)  // 1 second
+#define SENSOR_UPDATE_PERIOD_MS         (300)  // 1 second
 static uint8_t TemperatureTimerId;
 /* USER CODE END PV */
 
@@ -322,10 +321,15 @@ static void Sensor_Timer_Callback(void) {
 		// 3. Send the single 8-byte notification
 		Custom_STM_App_Update_Char(CUSTOM_STM_TEMPERATURE_PRESSURE,
 				sensor_payload);
-		HAL_LPTIM_Counter_Start_IT(&hlptim1, 15360);
 		aci_gap_terminate(Custom_App_Context.ConnectionHandle, 0x13);
-		UTIL_LPM_SetStopMode( 1U<<CFG_LPM_APP_BLE, UTIL_LPM_ENABLE );
-		UTIL_LPM_SetOffMode(  1U<<CFG_LPM_APP_BLE, UTIL_LPM_ENABLE );
+
+		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+		HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 10240, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		HAL_SuspendTick();
+		LL_C2_PWR_SetPowerMode(LL_PWR_MODE_STANDBY);
+		HAL_PWR_EnterSTANDBYMode();
+
 	}
 }
 /* USER CODE END FD_LOCAL_FUNCTIONS*/

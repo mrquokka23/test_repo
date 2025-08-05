@@ -149,7 +149,7 @@
  * SMPS not used when Set to 0
  * SMPS used when Set to 1
  */
-#define CFG_USE_SMPS    1
+#define CFG_USE_SMPS    0
 
 /* USER CODE BEGIN Generic_Parameters */
 
@@ -470,7 +470,7 @@
  *  When set to 1, the low power mode is enable
  *  When set to 0, the device stays in RUN mode
  */
-#define CFG_LPM_SUPPORTED    1
+#define CFG_LPM_SUPPORTED    0
 
  /**
  * This shall be set to 1 when standby is supported while the wireless stack on CPU2 is running
@@ -479,7 +479,7 @@
  * In this case the lowest power mode available will be Stop 1
  * Note that keeping that setting to 1 when standby is not supported does not hurt
  */
-#define CFG_LPM_STANDBY_SUPPORTED    1
+#define CFG_LPM_STANDBY_SUPPORTED    0
 
 /******************************************************************************
  * RTC interface
@@ -582,7 +582,7 @@ typedef enum
  * This shall be set to 0 in a final product
  *
  */
-#define CFG_HW_RESET_BY_FW         1
+#define CFG_HW_RESET_BY_FW         0
 
 /**
  * keep debugger enabled while in any low power mode when set to 1
