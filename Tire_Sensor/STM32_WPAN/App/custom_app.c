@@ -30,6 +30,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 extern RTC_HandleTypeDef hrtc;
+
+extern void Sleep_ArmWakeupAndIdle(void);
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -321,14 +323,15 @@ static void Sensor_Timer_Callback(void) {
 		// 3. Send the single 8-byte notification
 		Custom_STM_App_Update_Char(CUSTOM_STM_TEMPERATURE_PRESSURE,
 				sensor_payload);
-		aci_gap_terminate(Custom_App_Context.ConnectionHandle, 0x13);
 
-		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-		HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 10240, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		HAL_SuspendTick();
-		LL_C2_PWR_SetPowerMode(LL_PWR_MODE_STANDBY);
-		HAL_PWR_EnterSTANDBYMode();
+		// 1) Terminate the link (replace with your connection handle variable)
+		aci_gap_terminate(Custom_App_Context.ConnectionHandle, 0x13); // User terminated
+
+		// 2) Make sure we’re not advertising while we sleep
+		aci_gap_set_non_discoverable();
+
+		// 3) Arm the RTC wake and fall back to sequencer idle
+		Sleep_ArmWakeupAndIdle();
 
 	}
 }

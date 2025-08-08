@@ -1,8 +1,7 @@
-../Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_ll_pwr.h:1663:22:LL_C2_PWR_SetPowerMode	1
-../STM32_WPAN/App/custom_app.c:113:6:Custom_STM_App_Notification	3
-../STM32_WPAN/App/custom_app.c:167:6:Custom_APP_Notification	4
-../STM32_WPAN/App/custom_app.c:208:6:Custom_APP_Init	1
-../STM32_WPAN/App/custom_app.c:228:13:Custom_Temperature_pressure_Update_Char	2
-../STM32_WPAN/App/custom_app.c:247:6:Custom_Temperature_pressure_Send_Notification	2
-../STM32_WPAN/App/custom_app.c:268:6:Sensor_ReadTempPressure	1
-../STM32_WPAN/App/custom_app.c:307:13:Sensor_Timer_Callback	2
+../STM32_WPAN/App/custom_app.c:115:6:Custom_STM_App_Notification	3
+../STM32_WPAN/App/custom_app.c:169:6:Custom_APP_Notification	4
+../STM32_WPAN/App/custom_app.c:210:6:Custom_APP_Init	1
+../STM32_WPAN/App/custom_app.c:230:13:Custom_Temperature_pressure_Update_Char	2
+../STM32_WPAN/App/custom_app.c:249:6:Custom_Temperature_pressure_Send_Notification	2
+../STM32_WPAN/App/custom_app.c:270:6:Sensor_ReadTempPressure	1
+../STM32_WPAN/App/custom_app.c:309:13:Sensor_Timer_Callback	2

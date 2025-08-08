@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32_lpm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -138,21 +138,7 @@ int main(void)
   /* USER CODE BEGIN SysInit */
   if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
    {
-     __HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB);    // clear Standby flag
-     // 1) Turn on the IPCC clock for the mailbox interface
-     LL_C2_AHB3_GRP1_EnableClock(LL_C2_AHB3_GRP1_PERIPH_IPCC);
 
-     // 2) Unmask the wake-event line for CPU2 (IPCC_RX)
-     LL_C2_EXTI_EnableEvent_32_63(LL_EXTI_LINE_41);
-     LL_C2_EXTI_EnableIT_32_63(LL_EXTI_LINE_41);
-
-     // 3) Fire the event so CM0+ actually wakes from its STOP
-     __SEV();
-     __WFE();
-
-     // 4) Finally allow CPU2 to boot
-     LL_PWR_EnableBootC2();
-     // optionally skip some one-time inits here
    }
   /* USER CODE END SysInit */
 
@@ -430,7 +416,11 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
+  // Allow Stop mode for the App (so idle can drop to Stop2)
+  UTIL_LPM_SetStopMode(1 << CFG_LPM_APP, UTIL_LPM_ENABLE);
 
+  // Disallow Off/Standby for now (we’ll enable later if you choose Standby)
+  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE);
   /* USER CODE END RTC_Init 2 */
 
 }
