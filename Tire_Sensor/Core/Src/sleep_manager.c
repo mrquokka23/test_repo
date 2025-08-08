@@ -1,38 +1,50 @@
 #include "sleep_manager.h"
-#include "stm32wbxx_hal_rtc.h"
-#include "app_ble.h"
+#include "app_conf.h"
 #include "stm32_seq.h"
+#include "app_ble.h"
+#include "hw_conf.h"              // <-- Timer Server
 
+// One-shot Timer Server timer id
+static uint8_t s_sleepTimerId;
+
+// Forward decl
 static void StartAdvertisingTask(void);
-
-extern RTC_HandleTypeDef hrtc;
+static void Sleep_WakeCb(void);
 
 void Sleep_RegisterTasks(void)
 {
-  // Register the task that runs after wake to start advertising
-  UTIL_SEQ_RegTask(1 << TASK_ADV_ON_WAKE, UTIL_SEQ_RFU, StartAdvertisingTask);
-}
+  // Post-wake task (sequencer)
+  UTIL_SEQ_RegTask(1 << CFG_TASK_ADV_ON_WAKE_ID, UTIL_SEQ_RFU, StartAdvertisingTask);
 
-static void StartAdvertisingTask(void)
-{
-  // Stop the wakeup timer (optional if you set one-shot)
-  HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-
-  // Your project should already expose this; otherwise call aci_gap_set_discoverable
-  Adv_Request(APP_BLE_FAST_ADV);
+  // Create a one-shot Timer Server timer that will wake us from Stop2
+  HW_TS_Create(0, &s_sleepTimerId, hw_ts_SingleShot, Sleep_WakeCb);
 }
 
 void Sleep_ArmWakeupAndIdle(void)
 {
-  // ~10 s at 2048 Hz (RTC/16)
-  HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, WAKE_PERIOD_SEC * 2048U, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
+  // Convert seconds to Timer Server ticks (tick period is CFG_TS_TICK_VAL microseconds)
+  const uint32_t us = WAKE_PERIOD_SEC * 1000000UL;
+  const uint32_t ticks = (us + (CFG_TS_TICK_VAL - 1)) / CFG_TS_TICK_VAL; // ceil div, avoid 0
 
-  // Nothing else scheduled? Let sequencer idle enter Stop2 for you.
-  // Do NOT block here; just return to main loop (UTIL_SEQ_Run).
+  HW_TS_Stop(s_sleepTimerId);
+  HW_TS_Start(s_sleepTimerId, ticks);
+
+  // return to main; UTIL_SEQ_Idle() will enter Stop2
 }
 
 void Sleep_CancelWakeup(void)
 {
-  HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+  HW_TS_Stop(s_sleepTimerId);
+}
+
+static void Sleep_WakeCb(void)
+{
+  // We’re in Timer Server context; just post a task
+  UTIL_SEQ_SetTask(1 << CFG_TASK_ADV_ON_WAKE_ID, CFG_SCH_PRIO_0);
+}
+
+static void StartAdvertisingTask(void)
+{
+  // Start advertising after wake
+  APP_BLE_StartAdvertising();
 }

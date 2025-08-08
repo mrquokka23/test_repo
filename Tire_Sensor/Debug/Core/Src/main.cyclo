@@ -5,7 +5,7 @@
 ../Core/Src/main.c:315:6:PeriphCommonClock_Config	2
 ../Core/Src/main.c:340:13:MX_IPCC_Init	2
 ../Core/Src/main.c:366:13:MX_RF_Init	1
-../Core/Src/main.c:387:13:MX_RTC_Init	3
-../Core/Src/main.c:433:13:MX_SPI1_Init	2
-../Core/Src/main.c:473:13:MX_GPIO_Init	1
-../Core/Src/main.c:506:6:Error_Handler	1
+../Core/Src/main.c:387:13:MX_RTC_Init	2
+../Core/Src/main.c:429:13:MX_SPI1_Init	2
+../Core/Src/main.c:469:13:MX_GPIO_Init	1
+../Core/Src/main.c:502:6:Error_Handler	1

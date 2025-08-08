@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+void APP_BLE_StartAdvertising(void);
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

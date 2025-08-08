@@ -229,7 +229,7 @@ uint8_t a_AdvData[25] =
 {
   3, AD_TYPE_SHORTENED_LOCAL_NAME , 'S', '1',  /* Shortened name */
   2, AD_TYPE_LE_ROLE, 0x00 /* Only Peripheral Role supported */,
-  17, AD_TYPE_128_BIT_SERV_UUID_CMPLT_LIST, 0x8F, 0xE5, 0xB3, 0xD5, 0x2E, 0x7F, 0x4A, 0x98, 0x2A, 0x48, 0x7A, 0xCC, 0x23, 0x23, 0x00, 0x00,
+  17, AD_TYPE_128_BIT_SERV_UUID_CMPLT_LIST, 0x8F, 0xE5, 0xB3, 0xD5, 0x2E, 0x7F, 0x4A, 0x98, 0x2A, 0x48, 0x7A, 0xCC, 0x25, 0x23, 0x00, 0x00,
 
 };
 
@@ -251,7 +251,10 @@ static void Connection_Interval_Update_Req(void);
 #endif /* L2CAP_REQUEST_NEW_CONN_PARAM != 0 */
 
 /* USER CODE BEGIN PFP */
-
+void APP_BLE_StartAdvertising(void)
+{
+  Adv_Request(APP_BLE_FAST_ADV);
+}
 /* USER CODE END PFP */
 
 /* External variables --------------------------------------------------------*/
@@ -453,7 +456,11 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
       /* USER CODE END EVT_DISCONN_COMPLETE_1 */
 
       /* restart advertising */
-      Adv_Request(APP_BLE_FAST_ADV);
+      //Adv_Request(APP_BLE_FAST_ADV);
+      extern void Sleep_ArmWakeupAndIdle(void);
+
+      aci_gap_set_non_discoverable();   // radio fully off
+      Sleep_ArmWakeupAndIdle();         // arm ~10 s and let idle drop to Stop2
 
       /**
        * SPECIFIC to Custom Template APP

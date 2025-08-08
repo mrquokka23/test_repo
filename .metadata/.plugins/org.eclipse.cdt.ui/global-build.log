@@ -1,25 +1,144 @@
-13:11:40 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+14:46:23 **** Incremental Build of configuration Debug for project Tire_Sensor ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/sleep_manager.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sleep_manager.d" -MT"Core/Src/sleep_manager.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sleep_manager.o"
-../Core/Src/sleep_manager.c: In function 'StartAdvertisingTask':
-../Core/Src/sleep_manager.c:22:3: warning: implicit declaration of function 'Adv_Request' [-Wimplicit-function-declaration]
-   22 |   Adv_Request(APP_BLE_FAST_ADV);
-      |   ^~~~~~~~~~~
 arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Tire_Sensor.elf
  
 arm-none-eabi-size  Tire_Sensor.elf 
 arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
    text	   data	    bss	    dec	    hex	filename
-  37804	   2321	   2903	  43028	   a814	Tire_Sensor.elf
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
 Finished building: default.size.stdout
  
 Finished building: Tire_Sensor.list
  
-13:13:06 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+14:46:31 **** Incremental Build of configuration Debug for project Tire_Sensor ****
 make -j12 all 
 arm-none-eabi-size  Tire_Sensor.elf 
    text	   data	    bss	    dec	    hex	filename
-  37804	   2321	   2903	  43028	   a814	Tire_Sensor.elf
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
 Finished building: default.size.stdout
+ 
+14:46:52 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-size  Tire_Sensor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+15:42:26 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
+ 
+15:45:53 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
+ 
+15:49:31 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
+ 
+15:53:02 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
+ 
+15:53:24 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-size  Tire_Sensor.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+16:08:49 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
+ 
+16:22:11 **** Incremental Build of configuration Debug for project Tire_Sensor ****
+make -j12 all 
+arm-none-eabi-gcc "../STM32_WPAN/App/app_ble.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/app_ble.d" -MT"STM32_WPAN/App/app_ble.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/app_ble.o"
+arm-none-eabi-gcc "../STM32_WPAN/App/custom_stm.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32WB1Mxx -c -I../Core/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc -I../Drivers/STM32WBxx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32WBxx/Include -I../Drivers/CMSIS/Include -I../STM32_WPAN/App -I../Utilities/lpm/tiny_lpm -I../Middlewares/ST/STM32_WPAN -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl -I../Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci -I../Middlewares/ST/STM32_WPAN/utilities -I../Middlewares/ST/STM32_WPAN/ble/core -I../Middlewares/ST/STM32_WPAN/ble/core/auto -I../Middlewares/ST/STM32_WPAN/ble/core/template -I../Middlewares/ST/STM32_WPAN/ble/svc/Inc -I../Middlewares/ST/STM32_WPAN/ble/svc/Src -I../Utilities/sequencer -I../Middlewares/ST/STM32_WPAN/ble -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"STM32_WPAN/App/custom_stm.d" -MT"STM32_WPAN/App/custom_stm.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "STM32_WPAN/App/custom_stm.o"
+../STM32_WPAN/App/custom_stm.c: In function 'Custom_STM_Event_Handler':
+../STM32_WPAN/App/custom_stm.c:208:33: warning: implicit declaration of function 'Sensor_ReadTempPressure' [-Wimplicit-function-declaration]
+  208 |                                 Sensor_ReadTempPressure();
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Tire_Sensor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\stm32_workspaces\rehviandur\test_repo\Tire_Sensor\STM32WB1MMCHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tire_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Tire_Sensor.elf
+ 
+arm-none-eabi-size  Tire_Sensor.elf 
+arm-none-eabi-objdump -h -S Tire_Sensor.elf  > "Tire_Sensor.list"
+   text	   data	    bss	    dec	    hex	filename
+  37316	   2321	   2903	  42540	   a62c	Tire_Sensor.elf
+Finished building: default.size.stdout
+ 
+Finished building: Tire_Sensor.list
  

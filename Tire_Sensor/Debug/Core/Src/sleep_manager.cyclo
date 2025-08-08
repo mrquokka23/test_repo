@@ -1,4 +1,5 @@
-../Core/Src/sleep_manager.c:10:6:Sleep_RegisterTasks	1
-../Core/Src/sleep_manager.c:16:13:StartAdvertisingTask	1
-../Core/Src/sleep_manager.c:25:6:Sleep_ArmWakeupAndIdle	1
+../Core/Src/sleep_manager.c:14:6:Sleep_RegisterTasks	1
+../Core/Src/sleep_manager.c:23:6:Sleep_ArmWakeupAndIdle	1
 ../Core/Src/sleep_manager.c:35:6:Sleep_CancelWakeup	1
+../Core/Src/sleep_manager.c:40:13:Sleep_WakeCb	1
+../Core/Src/sleep_manager.c:46:13:StartAdvertisingTask	1

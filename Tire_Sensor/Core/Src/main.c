@@ -411,15 +411,11 @@ static void MX_RTC_Init(void)
 
   /** Enable the WakeUp
   */
-  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_RTCCLK_DIV16) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN RTC_Init 2 */
   // Allow Stop mode for the App (so idle can drop to Stop2)
   UTIL_LPM_SetStopMode(1 << CFG_LPM_APP, UTIL_LPM_ENABLE);
 
-  // Disallow Off/Standby for now (we’ll enable later if you choose Standby)
+  // Disallow Off/Standby for now (we’ll enable later)
   UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE);
   /* USER CODE END RTC_Init 2 */
 
